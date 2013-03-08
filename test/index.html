@@ -8,12 +8,14 @@
     <input id="color" placeholder="Type a color">
     <input id="color-async" placeholder="Type a color (async)">
     <input id="color-both" placeholder="Type a color (both)">
+    <input id="lot" placeholder="Lots of items">
     <script src="../build/build.js"></script>
     <script>
     require('stagas-watch-js')
 
     var autocomplete = require('autocomplete')
 
+    var lot = get('lot')
     var color = get('color')
     var colorAsync = get('color-async')
     var colorBoth = get('color-both')
@@ -35,7 +37,12 @@
     , "Grey"
     ]
 
+    var lots = [], i = 1000
+    while (--i) lots.push(i)
+
     autocomplete(color, colors)
+
+    autocomplete(lot, lots).maxItems(10)
 
     autocomplete(colorAsync, function (str, fn) {
       setTimeout(function () {

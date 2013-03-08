@@ -22,7 +22,7 @@ module.exports = autocomplete
 /**
  * autocomplete
  *
- * Attach autocomplete to an element.
+ * Attach autocomplete to an input element.
  *
  * @param {Element} input
  * @param {Array} [items]
@@ -52,6 +52,12 @@ function autocomplete (input, items, fn) {
   // remember latest fn
   var latest
 
+  dropdown._maxItems = 5
+  dropdown.maxItems = function (n) {
+    this._maxItems = n
+    return this
+  }
+
   // get input value on keyup
   input.onkeyup = input.onfocus = function (ev) {
     var val = input.value
@@ -59,7 +65,7 @@ function autocomplete (input, items, fn) {
     lastValue = val
 
     // filter already inserted items
-    dropdown.filter(match(val))
+    dropdown.filter(both(match(val), limit(dropdown._maxItems)))
     dropdown.show()
 
     // fetch async
@@ -80,7 +86,7 @@ function autocomplete (input, items, fn) {
         res.forEach(function (item) {
           dropdown.add(item)
         })
-        dropdown.filter(match(val))
+        dropdown.filter(both(match(val), limit(dropdown._maxItems)))
         dropdown.show()
       }
       fn(val, latest)
@@ -104,7 +110,7 @@ function autocomplete (input, items, fn) {
  *
  * Creates a filter function.
  *
- * @param  {String} val
+ * @param {String} val
  * @return {Function} fn
  * @api private
  */
@@ -112,6 +118,42 @@ function autocomplete (input, items, fn) {
 function match (val) {
   val = val.toLowerCase()
   return function (item) {
-    return !val.length || !!~item.text.toLowerCase().indexOf(val)
+    return !val.length || !!~item.text.toString().toLowerCase().indexOf(val)
+  }
+}
+
+/**
+ * Limit helper.
+ *
+ * Creates a filter function.
+ *
+ * @param {Number} n
+ * @return {Function} fn
+ * @api private
+ */
+
+function limit (n) {
+  var i = 0
+  return function (item) {
+    return i++ < n
+  }
+}
+
+/**
+ * Combines two filter functions.
+ *
+ * Creates a new filter function
+ * which evaluates when both encapsulated
+ * functions are truthy.
+ *
+ * @param {Function} a
+ * @param {Function} b
+ * @return {Function} fn
+ * @api private
+ */
+
+function both (a, b) {
+  return function (item) {
+    return a(item) && b(item)
   }
 }

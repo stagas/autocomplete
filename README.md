@@ -11,11 +11,18 @@ $ component-install stagas/autocomplete
 
 ## API
 
-### autocomplete(input, [items], [asyncFn])
+Inherits all methods from [Dropdown](https://github.com/stagas/dropdown) and [Menu](https://github.com/stagas/menu).
+
+### Autocomplete(input, [items], [asyncFn])
+
+Attach autocomplete to an input element.
+
+### Autocomplete.maxItems(n:Number)
+
+Set the maximum number of visible items.
 
 ## Usage
 
-Inherits all methods from [Dropdown](https://github.com/stagas/dropdown) and [Menu](https://github.com/stagas/menu).
 
 With a default set:
 
