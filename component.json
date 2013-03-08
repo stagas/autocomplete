@@ -1,0 +1,15 @@
+{
+  "name": "autocomplete",
+  "version": "0.0.1",
+  "description": "dropdown autocomplete for input elements",
+  "keywords": ["autocomplete","dropdown","ui"],
+  "author": "stagas",
+  "license": "MIT",
+  "dependencies": {
+    "stagas/dropdown": "*"
+  },
+  "development": {
+    "stagas/watch-js": "*"
+  },
+  "scripts": ["index.js"]
+}

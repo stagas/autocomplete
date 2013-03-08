@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>autocomplete</title>
+    <link rel="stylesheet" href="../build/build.css">
+  </head>
+  <body>
+    <input id="color" placeholder="Type a color">
+    <input id="color-async" placeholder="Type a color (async)">
+    <input id="color-both" placeholder="Type a color (both)">
+    <script src="../build/build.js"></script>
+    <script>
+    require('stagas-watch-js')
+
+    var autocomplete = require('autocomplete')
+
+    var color = get('color')
+    var colorAsync = get('color-async')
+    var colorBoth = get('color-both')
+
+    var colors = [
+      "Yellow"
+    , "Blue"
+    , "Red"
+    , "Green"
+    , "Cyan"
+    , "Black"
+    , "White"
+    ]
+
+    var remoteColors = [
+      "Magenta"
+    , "Brown"
+    , "Orange"
+    , "Grey"
+    ]
+
+    autocomplete(color, colors)
+
+    autocomplete(colorAsync, function (str, fn) {
+      setTimeout(function () {
+        fn(remoteColors.filter(match(str)))
+      }, (Math.random() * 10 | 0) * 100)
+    })
+
+    autocomplete(colorBoth, colors, function (str, fn) {
+      setTimeout(function () {
+        fn(remoteColors.filter(match(str)))
+      }, (Math.random() * 10 | 0) * 100)
+    })
+
+    // utils
+
+    function get (id) {
+      return document.getElementById(id)
+    }
+
+    function match (a) {
+      a = a.toLowerCase()
+      return function (b) {
+        return !a.length || !!~b.toLowerCase().indexOf(a)
+      }
+    }
+
+    </script>
+  </body>
+</html>
