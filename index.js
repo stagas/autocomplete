@@ -84,7 +84,9 @@ function autocomplete (input, items, fn) {
           }
         })
         res.forEach(function (item) {
-          dropdown.add(item)
+          if(typeof item === 'object')
+            dropdown.add(item[0], item[1])
+          else dropdown.add(item)
         })
         dropdown.filter(both(match(val), limit(dropdown._maxItems)))
         dropdown.show()
